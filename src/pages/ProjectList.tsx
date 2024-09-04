@@ -68,7 +68,7 @@ const ProjectList: FC = () => {
                     <div className="card-header">
                         <Link
                             className="btn btn-outline-primary"
-                            to="/create">Create New Project
+                            to="/project/create">Create New Project
                         </Link>
                     </div>
                     <div className="card-body">
@@ -88,13 +88,13 @@ const ProjectList: FC = () => {
                                             <td>{project.description}</td>
                                             <td>
                                                 <Link
-                                                    to={`/show/${project.id}`}
+                                                    to={`/project/show/${project.id}`}
                                                     className="btn btn-outline-info mx-1">
                                                     Show
                                                 </Link>
                                                 <Link
                                                     className="btn btn-outline-success mx-1"
-                                                    to={`/edit/${project.id}`}>
+                                                    to={`/project/edit/${project.id}`}>
                                                     Edit
                                                 </Link>
                                                 <button

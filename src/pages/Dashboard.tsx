@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 interface User {
   name?: string;
-  [key: string]: any; // This allows other properties as well
+  [key: string]: any;
 }
 
 const Dashboard: React.FC = () => {
@@ -13,7 +13,7 @@ const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User>({});
 
   useEffect(() => {
-    if (localStorage.getItem('token') === "" || localStorage.getItem('token') === null) {
+    if (!localStorage.getItem('token')) {
       navigate('/');
     } else {
       getUser();
@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
         { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } }
       )
       .then(() => {
-        localStorage.setItem('token', '');
+        localStorage.removeItem('token');
         navigate('/');
       })
       .catch((e) => {
@@ -55,22 +55,61 @@ const Dashboard: React.FC = () => {
         <div className="col-12">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#">
+              <Link className="navbar-brand" to="/dashboard">
                 Dashboard
-              </a>
-              <div className="d-flex">
-                <ul className="navbar-nav">
+              </Link>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item">
-                    <a
-                      onClick={logoutAction}
-                      className="nav-link"
-                      aria-current="page"
-                      href="#"
-                    >
-                      Logout
-                    </a>
+                    <Link className="nav-link" to="/home">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/about">
+                      About
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/contact">
+                      Contact
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/product">
+                      Product
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/project">
+                      ProjectList
+                    </Link>
                   </li>
                 </ul>
+                <div className="d-flex">
+                  <ul className="navbar-nav">
+                    <li className="nav-item">
+                      <button
+                        onClick={logoutAction}
+                        className="btn btn-link nav-link"
+                        aria-current="page"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </nav>

@@ -45,7 +45,7 @@ const ProjecCreate: FC = () => {
                     <div className="card-header">
                         <Link 
                             className="btn btn-outline-info float-right"
-                            to="/">View All Projects
+                            to="/project">View All Projects
                         </Link>
                     </div>
                     <div className="card-body">
