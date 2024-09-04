@@ -10,10 +10,15 @@
     "@types/node": "^16.18.107",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "axios": "^1.7.7",
+    "bootstrap": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
     "react-scripts": "5.0.1",
+    "sweetalert2": "^11.13.1",
     "typescript": "^4.9.5",
+    "typescript-app": "file:",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

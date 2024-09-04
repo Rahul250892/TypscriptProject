@@ -1,48 +1,51 @@
-import React,{ useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link, useNavigate } from "react-router-dom"
-import Layout from "../components/Layout"
+import React, { FC, useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { Link, useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 
-function Login() {
+interface ValidationErrors {
+    [key: string]: string[];
+}
+
+const Login: FC = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [validationErrors, setValidationErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
- 
-    useEffect(()=>{
-        if(localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null){
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (localStorage.getItem('token') !== "" && localStorage.getItem('token') !== null) {
             navigate("/dashboard");
         }
-        console.log(localStorage.getItem('token'))
-    },[])
- 
-    const loginAction = (e) => {
-        setValidationErrors({})
+        console.log(localStorage.getItem('token'));
+    }, []);
+
+    const loginAction = (e: React.FormEvent<HTMLFormElement>): void => {
+        setValidationErrors({});
         e.preventDefault();
-        setIsSubmitting(true)
-        let payload = {
-            email:email,
-            password:password,
-        }
+        setIsSubmitting(true);
+        const payload = {
+            email: email,
+            password: password,
+        };
         axios.post('/api/login', payload)
-        .then((r) => {
-            setIsSubmitting(false)
-            localStorage.setItem('token', r.data.token)
-            navigate("/dashboard");
-        })
-        .catch((e) => {
-            setIsSubmitting(false)
-            if (e.response.data.errors !== undefined) {
-                setValidationErrors(e.response.data.errors);
-            }
-            if (e.response.data.error !== undefined) {
-                setValidationErrors(e.response.data.error);
-            }
-        });
+            .then((r: AxiosResponse) => {
+                setIsSubmitting(false);
+                localStorage.setItem('token', r.data.token);
+                navigate("/dashboard");
+            })
+            .catch((e) => {
+                setIsSubmitting(false);
+                if (e.response.data.errors !== undefined) {
+                    setValidationErrors(e.response.data.errors);
+                }
+                if (e.response.data.error !== undefined) {
+                    setValidationErrors(e.response.data.error);
+                }
+            });
     }
- 
-     
+
     return (
         <Layout>
             <div className="row justify-content-md-center mt-5">
@@ -50,42 +53,42 @@ function Login() {
                     <div className="card">
                         <div className="card-body">
                             <h5 className="card-title mb-4">Sign In</h5>
-                            <form onSubmit={(e)=>{loginAction(e)}}>
+                            <form onSubmit={(e) => { loginAction(e) }}>
                                 {Object.keys(validationErrors).length !== 0 &&
-                                     <p className='text-center '><small className='text-danger'>Incorrect Email or Password</small></p>
+                                    <p className='text-center '><small className='text-danger'>Incorrect Email or Password</small></p>
                                 }
-                                
+
                                 <div className="mb-3">
-                                    <label 
+                                    <label
                                         htmlFor="email"
                                         className="form-label">
-                                            Email address
+                                        Email address
                                     </label>
-                                    <input 
+                                    <input
                                         type="email"
                                         className="form-control"
                                         id="email"
                                         name="email"
                                         value={email}
-                                        onChange={(e)=>{setEmail(e.target.value)}}
+                                        onChange={(e) => { setEmail(e.target.value) }}
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label 
+                                    <label
                                         htmlFor="password"
                                         className="form-label">Password
                                     </label>
-                                    <input 
+                                    <input
                                         type="password"
                                         className="form-control"
                                         id="password"
                                         name="password"
                                         value={password}
-                                        onChange={(e)=>{setPassword(e.target.value)}}
+                                        onChange={(e) => { setPassword(e.target.value) }}
                                     />
                                 </div>
                                 <div className="d-grid gap-2">
-                                    <button 
+                                    <button
                                         disabled={isSubmitting}
                                         type="submit"
                                         className="btn btn-primary btn-block">Login</button>
@@ -99,5 +102,5 @@ function Login() {
         </Layout>
     );
 }
-   
+
 export default Login;
